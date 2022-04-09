@@ -1,11 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
+using API.Errors;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Stripe;
+using Order = Core.Entities.OrderAggregate.Order;
 
 namespace API.Controllers
 {
@@ -22,7 +25,11 @@ namespace API.Controllers
         [HttpPost("basketId")]
         public async Task<ActionResult<CustomerBasket>> CreateOrUpdatePaymentIntent(string basketId)
         {
-            return await _paymentService.CreateOrUpdatePaymentIntent(basketId);
+            var basket = await _paymentService.CreateOrUpdatePaymentIntent(basketId);
+
+            if(basket == null) return BadRequest(new ApiResponse(400, "Problem with your basket"));
+
+            return basket;
         }
     }
 }

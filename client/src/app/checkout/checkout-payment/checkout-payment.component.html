@@ -28,7 +28,8 @@
   <button class="btn btn-outline-primary" cdkStepperPrevious>
     <i class="fa fa-angle-left"></i> Gözden Geçire dön
   </button>
-  <button class="btn btn-primary" (click)="submitOrder()">
+  <button [disabled]="loading" class="btn btn-primary" (click)="submitOrder()">
     Ödemeyi tamamla <i class="fa fa-angle-right"></i>
+    <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
   </button>
 </div>
